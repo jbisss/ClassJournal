@@ -7,7 +7,7 @@ public class Student {
     private final int id;
     private final String name;
     private final String surName;
-    private Journal ownClass;
+    public Journal ownClass;
     public ArrayList<Subject> subjects = new ArrayList<>();
 
     public Student(String name, String surName, Journal ownClass){
@@ -43,6 +43,6 @@ public class Student {
 
     @Override
     public String toString(){
-        return this.getName() + " " + this.getSurName() + " " + this.id;
+        return this.getName() + " " + this.getSurName() + " id: " + this.id;
     }
 }

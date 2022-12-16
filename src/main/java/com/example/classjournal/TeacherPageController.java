@@ -4,9 +4,12 @@ import com.example.classes.Container;
 import com.example.classes.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class TeacherPageController {
     public TextField fieldNumberClass;
@@ -21,15 +24,21 @@ public class TeacherPageController {
     public ComboBox<String> comboSubject;
     public TextField fieldMarkToAdd;
     public Label textErrorMark;
-
+    public Button buttonBack;
+    public Label textTeacherName;
     public void initialize(){
+        textTeacherName.setText(Container.teacher.getName());
         ObservableList<String> subs = FXCollections.observableList(Container.subjects);
         comboSubject.setItems(subs);
     }
     public void buttonHwAddClick(){
-        Container.currentClass.addHomeWork(fieldHwToAdd.getText());
+        String subject = comboSubject.getValue();
+        for (Student student : Container.currentClass.students){
+            student.getSubjectBuyName(subject).addHomeWork(fieldHwToAdd.getText());
+        }
         fieldHwToAdd.setText("");
-        fieldHw.setText(Container.currentClass.getHomeWork());
+        fieldHw.setText(Container.currentClass.students.get(0).getSubjectBuyName(subject).getHomeWork());
+
     }
     public void buttonApproveClick(){
         textError.setText("");
@@ -58,11 +67,12 @@ public class TeacherPageController {
         if (flagContinue) {
             vBoxStudent.getChildren().clear();
             fieldChosenClass.setText(String.valueOf(Container.currentClass));
-            fieldHw.setText(Container.currentClass.getHomeWork());
+            fieldHw.setText(Container.currentClass.students.get(0).getSubjectBuyName(subject).getHomeWork());
             for (Student student : Container.currentClass.students){
                 HBox hBox = new HBox();
                 TextField textName = new TextField();
                 textName.setEditable(false);
+                textName.setPrefWidth(200);
                 TextField textMarks = new TextField();
                 textMarks.setEditable(false);
                 Button buttonMarkAdd = new Button("Добавить оценку");
@@ -73,7 +83,6 @@ public class TeacherPageController {
                         if (markToAdd > 1 && markToAdd < 6){
                             student.getSubjectBuyName(subject).addMark(markToAdd);
                             textMarks.setText(String.valueOf(student.getSubjectBuyName(subject).marks));
-                            System.out.println(student.getSubjectBuyName(subject).getAverage());
                             if (student.getSubjectBuyName(subject).getAverage() > 4.5f) {
                                 textMarks.setStyle("-fx-text-fill: green;");
                             } else if (student.getSubjectBuyName(subject).getAverage() < 2.5f) {
@@ -104,5 +113,23 @@ public class TeacherPageController {
                 vBoxStudent.getChildren().add(hBox);
             }
         }
+    }
+    private void changeWindow(){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("register_page.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Window");
+            stage.setScene(scene);
+            stage.show();
+            Stage stagePrev = (Stage) buttonApprove.getScene().getWindow();
+            stagePrev.hide();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+    public void buttonBackClick(){
+        changeWindow();
     }
 }

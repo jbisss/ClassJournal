@@ -14,6 +14,10 @@ public class Teacher {
         return login;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getPassword() {
         return password;
     }

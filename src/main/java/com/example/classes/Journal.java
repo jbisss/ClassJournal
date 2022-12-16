@@ -5,8 +5,7 @@ import java.util.Random;
 
 public class Journal {
     public ArrayList<Student> students = new ArrayList<>();
-    private String homeWork = "Домашнее задание";
-    private int hWCount = 0;
+
     private final int classNumber;
     private final String classLetter;
     public Journal(int classNumber, String classLetter){
@@ -21,13 +20,7 @@ public class Journal {
         System.out.println(students);
     }
 
-    public void addHomeWork(String newHw){
-        hWCount++;
-        this.homeWork += "\n" + hWCount + ". " + newHw;
-    }
-    public String getHomeWork() {
-        return homeWork;
-    }
+
 
     @Override
     public String toString(){

@@ -6,6 +6,15 @@ import java.util.Random;
 public class Subject {
     public ArrayList<Integer> marks = new ArrayList<>();
     private final String name;
+    private String homeWork = "Домашнее задание";
+    private int hWCount = 0;
+    public void addHomeWork(String newHw){
+        hWCount++;
+        this.homeWork += "\n" + hWCount + ". " + newHw;
+    }
+    public String getHomeWork() {
+        return homeWork;
+    }
     private int sum = 0;
     private int count = 0;
     public Subject(String name){
